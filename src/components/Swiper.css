@@ -1,0 +1,111 @@
+/* Swiper plein écran */
+.my-swiper {
+  width: 100%;
+  height: 100vh; /* chaque slide prend toute la hauteur de la fenêtre */
+  position: relative;
+}
+
+/* Chaque slide avec image en background */
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-size: cover; /* image couvre tout le slide */
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Overlay pour le texte centré sur l'image */
+.slide-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 2;
+  max-width: 80%;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.3); /* optionnel pour lisibilité */
+  border-radius: 15px;
+}
+
+/* Titre */
+.slide-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Description */
+.slide-description {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+/* Bouton */
+.slide-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #e71414 0%, #da4646 100%);
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.slide-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Navigation Swiper au-dessus de l'image */
+.my-swiper .swiper-button-next,
+.my-swiper .swiper-button-prev {
+  color: white;
+  background: rgba(0,0,0,0.3);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+}
+
+.my-swiper .swiper-button-next:hover,
+.my-swiper .swiper-button-prev:hover {
+  background: rgba(0,0,0,0.6);
+}
+
+.my-swiper .swiper-pagination {
+  bottom: 20px;
+  z-index: 3;
+}
+
+.my-swiper .swiper-pagination-bullet {
+  background: rgba(255,255,255,0.7);
+}
+
+.my-swiper .swiper-pagination-bullet-active {
+  background: #667eea;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slide-title {
+    font-size: 2rem;
+  }
+  .slide-description {
+    font-size: 1rem;
+  }
+  .slide-button {
+    padding: 0.6rem 1.5rem;
+  }
+}

@@ -1,70 +1,179 @@
-# Getting Started with Create React App
+# Immigway Visa Agency
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Site web professionnel pour l'agence de visa Immigway, spécialisée dans les services d'immigration au Canada.
 
-## Available Scripts
+## 🚀 Fonctionnalités
 
-In the project directory, you can run:
+- **Site Web Responsive** : Design moderne et adaptatif
+- **Système de Rendez-vous** : Prise de rendez-vous en ligne avec base de données
+- **Envoi d'Emails Automatique** : Notifications par EmailJS
+- **Menu Multi-niveaux** : Navigation complexe avec mega menu
+- **Slider Interactif** : Carousel avec Swiper.js
+- **Multilingue** : Support français/anglais
+- **Calculateur CRS** : Outil d'évaluation Express Entry
 
-### `npm start`
+## 🛠️ Technologies Utilisées
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Frontend
+- **React 18** : Framework JavaScript moderne
+- **React Router** : Navigation et routage
+- **Swiper.js** : Carousel et slider
+- **CSS3** : Styles modernes et responsive
+- **EmailJS** : Envoi d'emails automatique
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
+- **Node.js** : Serveur JavaScript
+- **Express** : Framework web
+- **MySQL** : Base de données (via MAMP)
+- **CORS** : Gestion des requêtes cross-origin
 
-### `npm test`
+## 📦 Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prérequis
+- Node.js (v14+)
+- MAMP (pour MySQL)
+- Git
 
-### `npm run build`
+### Étapes d'installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Cloner le repository**
+   ```bash
+   git clone https://github.com/hicham-bifden/nasriimmegration.git
+   cd nasriimmegration
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Installer les dépendances**
+   ```bash
+   npm install
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. **Configurer la base de données**
+   - Démarrer MAMP
+   - Créer la base `nasri_bdd`
+   - Exécuter le script SQL dans `server/schema.sql`
 
-### `npm run eject`
+4. **Configurer les variables d'environnement**
+   ```bash
+   cp .env.example .env
+   # Éditer .env avec vos clés EmailJS
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+5. **Démarrer l'application**
+   ```bash
+   # Démarrer le serveur backend
+   npm run server
+   
+   # Dans un autre terminal, démarrer React
+   npm start
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🚀 Démarrage Rapide
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+# Script automatique pour démarrer tout
+./start-immigway.sh
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📁 Structure du Projet
 
-## Learn More
+```
+src/
+├── components/          # Composants React réutilisables
+│   ├── Header.js       # Navigation principale
+│   ├── Swiper.js       # Slider/carousel
+│   ├── AppointmentBooking.js  # Système de rendez-vous
+│   └── ...
+├── pages/              # Pages de l'application
+│   ├── HomePage.js     # Page d'accueil
+│   ├── immigrate/      # Pages immigration
+│   ├── services/       # Pages services
+│   └── ...
+├── contexts/           # Contextes React (langue, etc.)
+├── services/           # Services API
+└── config/             # Configuration
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+server/
+├── mamp-server.js     # Serveur Node.js principal
+├── routes/            # Routes API
+├── models/            # Modèles de données
+└── config/           # Configuration base de données
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🔧 Configuration
 
-### Code Splitting
+### EmailJS
+1. Créer un compte sur [EmailJS](https://www.emailjs.com/)
+2. Configurer les clés dans `.env`
+3. Créer des templates d'email
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Base de Données
+- **Host** : localhost (MAMP)
+- **Port** : 8889 (MAMP MySQL)
+- **Database** : nasri_bdd
+- **Table** : appointments
 
-### Analyzing the Bundle Size
+## 📱 Pages Disponibles
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **Accueil** : Slider et présentation
+- **Services** : Consultation, représentation complète
+- **Immigration** : Express Entry, PNP, Québec, Business
+- **Études** : Admission universitaire, permis d'études
+- **Travail** : Permis de travail, TFWP, IMP
+- **Visite** : Visa visiteur, ETA
+- **Parrainage** : Familial, parents
+- **Ressources** : Outils, guides, villes
+- **Rendez-vous** : Prise de rendez-vous en ligne
 
-### Making a Progressive Web App
+## 🎨 Personnalisation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Modifier le contenu
+- Éditer les composants dans `src/components/`
+- Modifier les pages dans `src/pages/`
+- Ajuster les styles dans les fichiers `.css`
 
-### Advanced Configuration
+### Ajouter des pages
+1. Créer le composant dans `src/pages/`
+2. Ajouter la route dans `src/App.js`
+3. Mettre à jour le menu dans `src/components/Header.js`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🚀 Déploiement
 
-### Deployment
+### Build de production
+```bash
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Serveur de production
+```bash
+npx serve -s build
+```
 
-### `npm run build` fails to minify
+## 🤝 Contribution
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Commit les changements (`git commit -m 'Ajouter nouvelle fonctionnalité'`)
+4. Push vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrir une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 📞 Support
+
+Pour toute question ou support :
+- Email : hicham.bifden@gmail.com
+- GitHub Issues : [Créer une issue](https://github.com/hicham-bifden/nasriimmegration/issues)
+
+## 🙏 Remerciements
+
+- React Community
+- Swiper.js
+- EmailJS
+- MAMP
+- Tous les contributeurs
+
+---
+
+**Développé avec ❤️ par Hicham Bifden**
