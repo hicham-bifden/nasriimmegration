@@ -22,9 +22,7 @@ const AppointmentBooking = () => {
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
   // Charger les créneaux disponibles quand la date change
-  useEffect(() => {
-    loadAvailableSlots();
-  }, [selectedDate]);
+
 
   const loadAvailableSlots = async () => {
     setIsLoadingSlots(true);
@@ -44,6 +42,12 @@ const AppointmentBooking = () => {
     setIsLoadingSlots(false);
   };
 
+  
+
+
+ useEffect(() => {
+  loadAvailableSlots();
+}, [selectedDate, loadAvailableSlots]);
   // Ancien tableau timeSlots supprimé - on utilise maintenant availableSlots de l'API
 
   const services = [
