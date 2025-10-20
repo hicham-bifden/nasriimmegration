@@ -2,6 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
 import Header from './components/Header';
+import SwiperComponent from './components/Swiper';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import Services from './components/Services';
+import About from './components/About';
 
 
 // Pages principales
@@ -120,7 +125,7 @@ function App() {
             {/* Page d'accueil avec tous les composants */}
             <Route path="/" element={
               <>
-              <Swiper /> 
+              <SwiperComponent /> 
               
                <About />
                 <Features />
