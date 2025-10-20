@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Calendar from 'react-calendar';
 import emailjs from '@emailjs/browser';
 import { FaCalendarAlt, FaClock, FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
@@ -21,35 +21,6 @@ const AppointmentBooking = () => {
   const [availableSlots, setAvailableSlots] = useState([]);
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
-  // Charger les créneaux disponibles quand la date change
-
-
-  const loadAvailableSlots = async () => {
-    setIsLoadingSlots(true);
-    try {
-      const dateStr = selectedDate.toISOString().split('T')[0];
-      const result = await AppointmentService.getAvailableSlots(dateStr);
-      setAvailableSlots(result.available_slots || []);
-    } catch (error) {
-      console.error('Erreur chargement créneaux:', error);
-      // Créneaux par défaut si l'API n'est pas disponible
-      const defaultSlots = [
-        '09:00:00', '09:30:00', '10:00:00', '10:30:00', '11:00:00', '11:30:00',
-        '14:00:00', '14:30:00', '15:00:00', '15:30:00', '16:00:00', '16:30:00'
-      ];
-      setAvailableSlots(defaultSlots);
-    }
-    setIsLoadingSlots(false);
-  };
-
-  
-
-
- useEffect(() => {
-  loadAvailableSlots();
-}, [selectedDate, loadAvailableSlots]);
-  // Ancien tableau timeSlots supprimé - on utilise maintenant availableSlots de l'API
-
   const services = [
     'Consultation Visa',
     'Demande de Green Card',
@@ -58,6 +29,27 @@ const AppointmentBooking = () => {
     'Admission Universitaire',
     'Autre'
   ];
+
+  // Charger les créneaux disponibles
+  const loadAvailableSlots = useCallback(async () => {
+    setIsLoadingSlots(true);
+    try {
+      const dateStr = selectedDate.toISOString().split('T')[0];
+      const result = await AppointmentService.getAvailableSlots(dateStr);
+      setAvailableSlots(result.available_slots || []);
+    } catch (error) {
+      console.error('Erreur chargement créneaux:', error);
+      setAvailableSlots([
+        '09:00:00','09:30:00','10:00:00','10:30:00','11:00:00','11:30:00',
+        '14:00:00','14:30:00','15:00:00','15:30:00','16:00:00','16:30:00'
+      ]);
+    }
+    setIsLoadingSlots(false);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    loadAvailableSlots();
+  }, [loadAvailableSlots]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,19 +80,16 @@ const AppointmentBooking = () => {
     };
 
     try {
-      // Sauvegarder dans la base de données MySQL
       const dbResult = await AppointmentService.createAppointment(appointmentData);
-      
-      // Envoyer l'email via EmailJS
+
       const emailData = {
         ...appointmentData,
-        date: selectedDate.toLocaleDateString('fr-FR'),
-        to_email: 'hicham.bifden@gmail.com'
+        date: selectedDate.toLocaleDateString('fr-FR')
       };
 
       const { serviceId, templateId, templateConfirmationId, publicKey } = EMAILJS_CONFIG;
 
-      // Email pour vous (admin)
+      // Email admin
       await emailjs.send(
         serviceId,
         templateId,
@@ -112,7 +101,7 @@ const AppointmentBooking = () => {
         publicKey
       );
 
-      // Email de confirmation pour le client
+      // Email client
       await emailjs.send(
         serviceId,
         templateConfirmationId,
@@ -125,7 +114,7 @@ const AppointmentBooking = () => {
       );
 
       setSubmitStatus(`✅ Rendez-vous confirmé ! ID: ${dbResult.appointment.id}. Vous recevrez un email de confirmation.`);
-      
+
       // Reset form
       setFormData({
         name: '',
@@ -135,10 +124,10 @@ const AppointmentBooking = () => {
         message: ''
       });
       setSelectedTime('');
-      
-      // Recharger les créneaux disponibles
+
+      // Recharger les créneaux
       loadAvailableSlots();
-      
+
     } catch (error) {
       console.error('Erreur lors de l\'envoi:', error);
       setSubmitStatus(`❌ Erreur: ${error.message}`);
@@ -182,20 +171,16 @@ const AppointmentBooking = () => {
                 ) : (
                   <div className="time-slots">
                     {availableSlots.length > 0 ? (
-                      availableSlots.map(time => {
-                        // Convertir le format HH:MM:SS en HH:MM pour l'affichage
-                        const displayTime = time.substring(0, 5);
-                        return (
-                          <button
-                            key={time}
-                            type="button"
-                            className={`time-slot ${selectedTime === time ? 'selected' : ''}`}
-                            onClick={() => setSelectedTime(time)}
-                          >
-                            {displayTime}
-                          </button>
-                        );
-                      })
+                      availableSlots.map(time => (
+                        <button
+                          key={time}
+                          type="button"
+                          className={`time-slot ${selectedTime === time ? 'selected' : ''}`}
+                          onClick={() => setSelectedTime(time)}
+                        >
+                          {time.substring(0,5)}
+                        </button>
+                      ))
                     ) : (
                       <div className="no-slots">Aucun créneau disponible pour cette date</div>
                     )}
@@ -205,9 +190,7 @@ const AppointmentBooking = () => {
 
               <div className="form-fields">
                 <div className="field-group">
-                  <label htmlFor="name">
-                    <FaUser /> Nom complet *
-                  </label>
+                  <label htmlFor="name"><FaUser /> Nom complet *</label>
                   <input
                     type="text"
                     id="name"
@@ -220,9 +203,7 @@ const AppointmentBooking = () => {
                 </div>
 
                 <div className="field-group">
-                  <label htmlFor="email">
-                    <FaEnvelope /> Email *
-                  </label>
+                  <label htmlFor="email"><FaEnvelope /> Email *</label>
                   <input
                     type="email"
                     id="email"
@@ -235,9 +216,7 @@ const AppointmentBooking = () => {
                 </div>
 
                 <div className="field-group">
-                  <label htmlFor="phone">
-                    <FaPhone /> Téléphone
-                  </label>
+                  <label htmlFor="phone"><FaPhone /> Téléphone</label>
                   <input
                     type="tel"
                     id="phone"
@@ -278,25 +257,13 @@ const AppointmentBooking = () => {
 
               <div className="appointment-summary">
                 <h3>Résumé du rendez-vous</h3>
-                <div className="summary-item">
-                  <strong>Date:</strong> {selectedDate.toLocaleDateString('fr-FR')}
-                </div>
-                <div className="summary-item">
-                  <strong>Heure:</strong> {selectedTime || 'Non sélectionnée'}
-                </div>
-                <div className="summary-item">
-                  <strong>Nom:</strong> {formData.name || 'Non renseigné'}
-                </div>
-                <div className="summary-item">
-                  <strong>Service:</strong> {formData.service || 'Non spécifié'}
-                </div>
+                <div className="summary-item"><strong>Date:</strong> {selectedDate.toLocaleDateString('fr-FR')}</div>
+                <div className="summary-item"><strong>Heure:</strong> {selectedTime || 'Non sélectionnée'}</div>
+                <div className="summary-item"><strong>Nom:</strong> {formData.name || 'Non renseigné'}</div>
+                <div className="summary-item"><strong>Service:</strong> {formData.service || 'Non spécifié'}</div>
               </div>
 
-              <button 
-                type="submit" 
-                className="submit-btn"
-                disabled={isSubmitting}
-              >
+              <button type="submit" className="submit-btn" disabled={isSubmitting}>
                 {isSubmitting ? 'Envoi en cours...' : 'Confirmer le rendez-vous'}
               </button>
 
