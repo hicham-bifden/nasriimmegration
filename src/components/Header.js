@@ -198,7 +198,7 @@ const Header = () => {
                
             </div>
             <div className="logo-text">
-              <img src ="/images/logo1-2.png" />
+              <img src ="/images/logo1-2.png" alt= "Nasri Immigration logo" />
             </div>
           </Link>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPhone, FaCheck, FaPassport, FaTimes } from 'react-icons/fa';
+import { FaPhone, FaCheck,  } from 'react-icons/fa';
 import './About.css';
 
 const About = () => {
