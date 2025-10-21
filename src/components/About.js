@@ -47,12 +47,11 @@ const About = () => {
               Une Histoire Bâtie sur l'Expérience et le Succès
             </h2>
             
-            <p className="about-description">
+            <div className="about-description">
               <h3>Votre Partenaire Expert pour une Transition Réussie au Canada</h3>
-               chez Nasri immigration services, nous comprenons parfaitement les défis du parcours d’immigration, car nous avons été exactement à votre place. Nous avons nous aussi parcouru d'innombrables pages web, faisant preuve de détermination et de patience, pour réussir à concrétiser notre rêve canadien.
-Chaque année, le Canada ouvre ses portes à 400 000 nouveaux arrivants. Avec la bonne orientation et un soutien expert, vous pouvez faire partie de cette nation qui célèbre activement l'immigration et la diversité. C'est précisément ce que nous vous offrons : un réseau de conseils objectifs et indépendants pour tous les aspects de votre projet au Canada
-             
-            </p>
+              <p>Chez Nasri immigration services, nous comprenons parfaitement les défis du parcours d'immigration, car nous avons été exactement à votre place. Nous avons nous aussi parcouru d'innombrables pages web, faisant preuve de détermination et de patience, pour réussir à concrétiser notre rêve canadien.</p>
+              <p>Chaque année, le Canada ouvre ses portes à 400 000 nouveaux arrivants. Avec la bonne orientation et un soutien expert, vous pouvez faire partie de cette nation qui célèbre activement l'immigration et la diversité. C'est précisément ce que nous vous offrons : un réseau de conseils objectifs et indépendants pour tous les aspects de votre projet au Canada.</p>
+            </div>
             
              
             

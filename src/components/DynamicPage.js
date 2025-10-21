@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import PageService from '../../services/pageService';
-import PageTemplate from '../../components/PageTemplate';
-import '../../components/DynamicPage.css';
+import { useParams } from 'react-router-dom';
+import PageService from '../services/pageService';
+import PageTemplate from '../components/PageTemplate';
+import './DynamicPage.css';
 
 /**
- * Page de représentation complète en immigration
- * Cette page charge le contenu depuis la base de données
+ * Composant pour afficher les pages dynamiques depuis la base de données
+ * Fichier: src/components/DynamicPage.js
  */
-const FullRepresentationPage = () => {
+const DynamicPage = () => {
+  const { slug } = useParams();
   const [page, setPage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,7 +20,11 @@ const FullRepresentationPage = () => {
         setLoading(true);
         setError(null);
         
-        const pageData = await PageService.getPageBySlug('full-representation');
+        if (!slug) {
+          throw new Error('Slug manquant');
+        }
+        
+        const pageData = await PageService.getPageBySlug(slug);
         
         if (!pageData) {
           throw new Error('Page non trouvée');
@@ -34,7 +40,7 @@ const FullRepresentationPage = () => {
     };
 
     loadPage();
-  }, []);
+  }, [slug]);
 
   if (loading) {
     return (
@@ -91,4 +97,4 @@ const FullRepresentationPage = () => {
   );
 };
 
-export default FullRepresentationPage;
+export default DynamicPage;

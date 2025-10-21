@@ -12,8 +12,12 @@ import About from './components/About';
 // Pages principales
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
+//import ContactPage from './pages/ContactPage';
 import AppointmentPage from './pages/AppointmentPage';
 import EmailTestPage from './pages/EmailTestPage';
+
+// Page d'administration
+import AdminPages from './pages/admin/AdminPages';
 
 // Pages Services
 import ImmigrationConsultingPage from './pages/services/ImmigrationConsultingPage';
@@ -135,8 +139,12 @@ function App() {
             
             {/* Pages principales */}
             <Route path="/home" element={<HomePage />} />
+         {/*  <Route path="/contact" element={</*ContactPage />} />*/}
             <Route path="/appointment" element={<AppointmentPage />} />
             <Route path="/email-test" element={<EmailTestPage />} />
+            
+            {/* Page d'administration */}
+            <Route path="/admin/pages" element={<AdminPages />} />
             
             {/* Routes Services */}
             <Route path="/services" element={<ServicesPage />} />

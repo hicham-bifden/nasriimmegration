@@ -141,7 +141,6 @@
   visibility: visible;
   transform: translateY(0);
   transition: all 0.3s ease;
-  border: 2px solid red; /* Debug border */
 }
 
 .mega-menu-content {
@@ -287,6 +286,23 @@
   background: linear-gradient(45deg, #c0392b, #d35400);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+/* Admin Link Styles */
+.admin-link {
+  background: #3498db;
+  color: white !important;
+  padding: 0.1rem 0.3rem;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  min-width: 80px;
+}
+
+.admin-link:hover {
+  background: linear-gradient(45deg, #2980b9, #3498db);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
 
 /* Test Link Styles */

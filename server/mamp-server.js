@@ -302,6 +302,66 @@ app.get('/api/menu', async (req, res) => {
   }
 });
 
+// Route pour récupérer une page par slug
+app.get('/api/pages/:slug', async (req, res) => {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    
+    const [rows] = await connection.execute(
+      'SELECT * FROM pages WHERE slug = ? AND is_published = 1',
+      [req.params.slug]
+    );
+
+    connection.end();
+
+    if (rows.length === 0) {
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Page non trouvée' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      page: rows[0] 
+    });
+  } catch (error) {
+    console.error('Erreur API page:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Erreur serveur' 
+    });
+  }
+});
+
+// Route pour sauvegarder une page
+app.put('/api/pages/:slug', async (req, res) => {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    
+    const { content, title, meta_description } = req.body;
+    const slug = req.params.slug;
+    
+    await connection.execute(
+      'UPDATE pages SET content = ?, title = ?, meta_description = ?, updated_at = CURRENT_TIMESTAMP WHERE slug = ?',
+      [content, title, meta_description, slug]
+    );
+
+    connection.end();
+
+    res.json({ 
+      success: true, 
+      message: 'Page sauvegardée avec succès' 
+    });
+  } catch (error) {
+    console.error('Erreur API sauvegarde page:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Erreur serveur' 
+    });
+  }
+});
+
 // Servir React pour toutes les autres routes
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));

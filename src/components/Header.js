@@ -32,8 +32,6 @@ const Header = () => {
       
       // Charger le menu depuis l'API
       const menu = await MenuService.getMenu();
-      console.log('Menu chargé:', menu);
-      console.log('Premier élément:', menu[0]);
       setMenuItems(menu);
     } catch (err) {
       console.error('Erreur lors du chargement du menu:', err);
@@ -129,6 +127,12 @@ const Header = () => {
                   📅 Rendez-vous
                 </Link>
               </li>
+              
+              <li className="nav-item">
+                <Link to="/admin/pages" className="nav-link admin-link">
+                  ⚙️ Admin
+                </Link>
+              </li>
 
               {/* -- IGNORE --- 
               <li className="nav-item">
@@ -142,14 +146,6 @@ const Header = () => {
 
           {/* Actions du header : Recherche, Langue */}
           <div className="header-actions">
-            {/* Bouton de test temporaire */}
-            <button 
-              onClick={() => setActiveDropdown('Services')}
-              style={{background: 'red', color: 'white', padding: '5px 10px', marginRight: '10px'}}
-            >
-              Test Menu
-            </button>
-            
             {/* Barre de recherche */}
             <div className="search-container">
               <FaSearch className="search-icon" />
