@@ -52,7 +52,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "node server/server.js",
+    "server": "node server/mamp-server.js",
     "dev": "concurrently \"npm run server\" \"npm start\"",
     "build:full": "npm run build && npm run server"
   },
@@ -74,6 +74,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy": "http://localhost:3025",
   "devDependencies": {
     "concurrently": "^9.2.1"
   }
