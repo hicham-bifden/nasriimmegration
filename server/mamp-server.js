@@ -257,6 +257,51 @@ app.post('/api/init-database', async (req, res) => {
   }
 });
 
+// Route pour récupérer le menu
+app.get('/api/menu', async (req, res) => {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    
+    // Récupérer les éléments de menu principaux
+    const [menuItems] = await connection.execute(
+      'SELECT * FROM menu_items WHERE is_active = 1 ORDER BY sort_order ASC'
+    );
+
+    // Pour chaque élément de menu, récupérer ses colonnes
+    for (let item of menuItems) {
+      const [columns] = await connection.execute(
+        'SELECT * FROM menu_columns WHERE menu_item_id = ? ORDER BY sort_order ASC',
+        [item.id]
+      );
+
+      // Pour chaque colonne, récupérer ses éléments
+      for (let column of columns) {
+        const [items] = await connection.execute(
+          'SELECT * FROM menu_column_items WHERE column_id = ? ORDER BY sort_order ASC',
+          [column.id]
+        );
+        column.items = items;
+      }
+
+      item.columns = columns;
+    }
+
+    connection.end();
+
+    res.json({ 
+      success: true, 
+      menu: menuItems,
+      total: menuItems.length 
+    });
+  } catch (error) {
+    console.error('Erreur API menu:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Erreur serveur' 
+    });
+  }
+});
+
 // Servir React pour toutes les autres routes
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));

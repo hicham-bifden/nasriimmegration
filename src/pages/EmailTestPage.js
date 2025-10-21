@@ -1,13 +1,13 @@
 import React from 'react';
-import Page from '../components/Page';
+import PageTemplate from '../components/PageTemplate';
 import EmailTest from '../components/EmailTest';
 import '../pages/Pages.css';
 
 const EmailTestPage = () => {
   return (
-    <Page title="Test EmailJS">
+    <PageTemplate title="Test EmailJS">
       <EmailTest />
-    </Page>
+    </PageTemplate>
   );
 };
 

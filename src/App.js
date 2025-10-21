@@ -12,7 +12,6 @@ import About from './components/About';
 // Pages principales
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
-import ContactPage from './pages/ContactPage';
 import AppointmentPage from './pages/AppointmentPage';
 import EmailTestPage from './pages/EmailTestPage';
 
@@ -136,7 +135,6 @@ function App() {
             
             {/* Pages principales */}
             <Route path="/home" element={<HomePage />} />
-            <Route path="/contact" element={<ContactPage />} />
             <Route path="/appointment" element={<AppointmentPage />} />
             <Route path="/email-test" element={<EmailTestPage />} />
             

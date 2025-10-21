@@ -1,11 +1,11 @@
 import React from 'react';
-import Page from '../components/Page';
+import PageTemplate from '../components/PageTemplate';
 import SwiperComponent from '../components/Swiper';
 import './Pages.css';
 
 const HomePage = () => {
   return (
-    <Page title="Accueil">
+    <PageTemplate title="Accueil">
       {/* Slider avec Swiper */}
       <SwiperComponent />
       
@@ -33,7 +33,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-    </Page>
+    </PageTemplate>
   );
 };
 
