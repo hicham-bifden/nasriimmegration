@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import TextAlign from '@tiptap/extension-text-align';
-import Highlight from '@tiptap/extension-highlight';
-import { TextStyle } from '@tiptap/extension-text-style';
-import { Color } from '@tiptap/extension-color';
-import Placeholder from '@tiptap/extension-placeholder';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { Color } from '@tiptap/extension-color';
+import TextAlign from '@tiptap/extension-text-align';
+import Underline from '@tiptap/extension-underline';
+import Strike from '@tiptap/extension-strike';
+import Code from '@tiptap/extension-code';
+import Superscript from '@tiptap/extension-superscript';
+import Subscript from '@tiptap/extension-subscript';
+import Highlight from '@tiptap/extension-highlight';
+import FontFamily from '@tiptap/extension-font-family';
 import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
-import { TableHeader } from '@tiptap/extension-table-header';
 import { TableCell } from '@tiptap/extension-table-cell';
+import { TableHeader } from '@tiptap/extension-table-header';
+import Youtube from '@tiptap/extension-youtube';
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
+import Blockquote from '@tiptap/extension-blockquote';
+import CodeBlock from '@tiptap/extension-code-block';
+import HardBreak from '@tiptap/extension-hard-break';
+import History from '@tiptap/extension-history';
+import Placeholder from '@tiptap/extension-placeholder';
 import PageService from '../../services/pageService';
 import './AdminPages.css';
 
 /**
- * Composant d'administration avec éditeur Tiptap minimal
+ * Composant d'administration avec éditeur WYSIWYG Tiptap complet
  */
 const AdminPages = () => {
   const [pages, setPages] = useState([]);
@@ -25,86 +37,18 @@ const AdminPages = () => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
 
-  // Fonction pour ajouter une image
-  const addImage = () => {
-    const url = window.prompt('Entrez l\'URL de l\'image:');
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
-  };
-
-  // Fonction pour ajouter un lien
-  const addLink = () => {
-    const url = window.prompt('Entrez l\'URL du lien:');
-    if (url) {
-      editor.chain().focus().setLink({ href: url }).run();
-    }
-  };
-
-  // Fonction pour créer des colonnes
-  const createColumns = (count) => {
-    const columns = Array(count).fill().map((_, index) => 
-      `<div class="column-item" style="flex: 1; padding: 0 10px; box-sizing: border-box;"><p>Colonne ${index + 1}</p></div>`
-    ).join('');
-    editor.chain().focus().insertContent(`<div class="columns-container" style="display: flex; gap: 20px; width: 100%; margin: 1rem 0;">${columns}</div>`).run();
-  };
-
-  // Fonction pour ajouter un bouton avec lien
-  const addButton = () => {
-    const url = window.prompt('Entrez l\'URL du bouton:');
-    const text = window.prompt('Entrez le texte du bouton:', 'Cliquez ici');
-    if (url && text) {
-      editor.chain().focus().insertContent(`<a href="${url}" class="editor-button" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin: 10px 0;">${text}</a>`).run();
-    }
-  };
-
-  // Fonction pour uploader une image depuis le PC
-  const uploadImage = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          editor.chain().focus().setImage({ src: e.target.result }).run();
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    input.click();
-  };
-
-  // Fonction pour ajouter une image avec lien
-  const addImageWithLink = () => {
-    const imageUrl = window.prompt('Entrez l\'URL de l\'image:');
-    const linkUrl = window.prompt('Entrez l\'URL du lien (optionnel):');
-    if (imageUrl) {
-      if (linkUrl) {
-        editor.chain().focus().insertContent(`<a href="${linkUrl}" target="_blank"><img src="${imageUrl}" class="editor-image" style="max-width: 100%; height: auto; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);" /></a>`).run();
-      } else {
-        editor.chain().focus().setImage({ src: imageUrl }).run();
-      }
-    }
-  };
-
-  // Configuration de l'éditeur Tiptap minimal
+  // Configuration de l'éditeur Tiptap simplifié
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        link: false, // Désactiver le lien de StarterKit pour utiliser notre extension Link
-      }),
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
-      }),
-      Highlight.configure({
-        multicolor: true,
-      }),
-      TextStyle,
-      Color,
-      Placeholder.configure({
-        placeholder: 'Commencez à écrire votre contenu...',
+        // Désactiver les extensions qui sont ajoutées séparément
+        codeBlock: false,
+        blockquote: false,
+        horizontalRule: false,
+        hardBreak: false,
+        history: false,
+        strike: false,
+        code: false,
       }),
       Image.configure({
         HTMLAttributes: {
@@ -117,12 +61,40 @@ const AdminPages = () => {
           class: 'editor-link',
         },
       }),
+      TextStyle,
+      Color,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      Underline,
+      Strike,
+      Code,
+      Superscript,
+      Subscript,
+      Highlight.configure({
+        multicolor: true,
+      }),
+      FontFamily.configure({
+        types: ['textStyle'],
+      }),
       Table.configure({
         resizable: true,
       }),
       TableRow,
       TableHeader,
       TableCell,
+      Youtube.configure({
+        controls: false,
+        nocookie: true,
+      }),
+      HorizontalRule,
+      Blockquote,
+      CodeBlock,
+      HardBreak,
+      History,
+      Placeholder.configure({
+        placeholder: 'Commencez à écrire...',
+      }),
     ],
     content: '',
     editorProps: {
@@ -272,7 +244,7 @@ const AdminPages = () => {
               />
             </div>
 
-            {/* Barre d'outils Tiptap minimal */}
+            {/* Barre d'outils Tiptap */}
             <div className="editor-toolbar">
               <div className="toolbar-group">
                 <button
@@ -290,51 +262,18 @@ const AdminPages = () => {
                   <em>I</em>
                 </button>
                 <button
+                  onClick={() => editor.chain().focus().toggleUnderline().run()}
+                  className={editor.isActive('underline') ? 'is-active' : ''}
+                  title="Souligné"
+                >
+                  <u>U</u>
+                </button>
+                <button
                   onClick={() => editor.chain().focus().toggleStrike().run()}
                   className={editor.isActive('strike') ? 'is-active' : ''}
                   title="Barré"
                 >
                   <s>S</s>
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().toggleHighlight().run()}
-                  className={editor.isActive('highlight') ? 'is-active' : ''}
-                  title="Surligner"
-                >
-                  🖍️
-                </button>
-              </div>
-
-              <div className="toolbar-group">
-                <button
-                  onClick={() => editor.chain().focus().setColor('#ff0000').run()}
-                  className={editor.isActive('textStyle', { color: '#ff0000' }) ? 'is-active' : ''}
-                  title="Texte rouge"
-                  style={{ color: '#ff0000' }}
-                >
-                  A
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().setColor('#0000ff').run()}
-                  className={editor.isActive('textStyle', { color: '#0000ff' }) ? 'is-active' : ''}
-                  title="Texte bleu"
-                  style={{ color: '#0000ff' }}
-                >
-                  A
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().setColor('#00ff00').run()}
-                  className={editor.isActive('textStyle', { color: '#00ff00' }) ? 'is-active' : ''}
-                  title="Texte vert"
-                  style={{ color: '#00ff00' }}
-                >
-                  A
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().unsetColor().run()}
-                  title="Couleur par défaut"
-                >
-                  A
                 </button>
               </div>
 
@@ -364,102 +303,6 @@ const AdminPages = () => {
 
               <div className="toolbar-group">
                 <button
-                  onClick={addImage}
-                  title="Insérer une image"
-                >
-                  🖼️
-                </button>
-                <button
-                  onClick={addLink}
-                  className={editor.isActive('link') ? 'is-active' : ''}
-                  title="Insérer un lien"
-                >
-                  🔗
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().unsetLink().run()}
-                  disabled={!editor.isActive('link')}
-                  title="Supprimer le lien"
-                >
-                  🔗❌
-                </button>
-              </div>
-
-              <div className="toolbar-group">
-                <button
-                  onClick={() => createColumns(2)}
-                  title="2 colonnes"
-                >
-                  📊 2
-                </button>
-                <button
-                  onClick={() => createColumns(3)}
-                  title="3 colonnes"
-                >
-                  📊 3
-                </button>
-              </div>
-
-              <div className="toolbar-group">
-                <button
-                  onClick={() => editor.chain().focus().insertTable().run()}
-                  title="Insérer un tableau"
-                >
-                  📋
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().addColumnBefore().run()}
-                  disabled={!editor.isActive('table')}
-                  title="Ajouter colonne avant"
-                >
-                  ➕
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().addColumnAfter().run()}
-                  disabled={!editor.isActive('table')}
-                  title="Ajouter colonne après"
-                >
-                  ➕
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().deleteColumn().run()}
-                  disabled={!editor.isActive('table')}
-                  title="Supprimer colonne"
-                >
-                  ➖
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().addRowBefore().run()}
-                  disabled={!editor.isActive('table')}
-                  title="Ajouter ligne avant"
-                >
-                  ⬆️
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().addRowAfter().run()}
-                  disabled={!editor.isActive('table')}
-                  title="Ajouter ligne après"
-                >
-                  ⬇️
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().deleteRow().run()}
-                  disabled={!editor.isActive('table')}
-                  title="Supprimer ligne"
-                >
-                  🗑️
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().deleteTable().run()}
-                  disabled={!editor.isActive('table')}
-                  title="Supprimer tableau"
-                >
-                  🗑️📋
-                </button>
-              </div>
-
-              <div className="toolbar-group">
-                <button
                   onClick={() => editor.chain().focus().toggleBulletList().run()}
                   className={editor.isActive('bulletList') ? 'is-active' : ''}
                   title="Liste à puces"
@@ -472,37 +315,6 @@ const AdminPages = () => {
                   title="Liste numérotée"
                 >
                   1. Liste
-                </button>
-              </div>
-
-              <div className="toolbar-group">
-                <button
-                  onClick={() => editor.chain().focus().setTextAlign('left').run()}
-                  className={editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}
-                  title="Aligner à gauche"
-                >
-                  ⬅
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().setTextAlign('center').run()}
-                  className={editor.isActive({ textAlign: 'center' }) ? 'is-active' : ''}
-                  title="Centrer"
-                >
-                  ↔
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().setTextAlign('right').run()}
-                  className={editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''}
-                  title="Aligner à droite"
-                >
-                  ➡
-                </button>
-                <button
-                  onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-                  className={editor.isActive({ textAlign: 'justify' }) ? 'is-active' : ''}
-                  title="Justifier"
-                >
-                  ⬌
                 </button>
               </div>
 
